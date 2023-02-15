@@ -1,24 +1,38 @@
 import logo from './logo.svg';
 import './App.css';
+import { Route, Routes } from 'react-router-dom';
+import Home from './Components/Home';
+import ParseExcel from './Components/ParseExcel';
+import { Container, Navbar } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+
+    <header>
+    <Navbar bg='dark' variant='dark' >
+      <Container>
+        <LinkContainer to='/parse-excel'>
+        <Navbar.Brand>Rhino parse excel</Navbar.Brand>
+        </LinkContainer>
+       
+      </Container>
+      </Navbar>
+  </header>
+    <main>
+      <Container>
+    <Routes>
+      <Route path='/' element={ <Home /> } /> 
+      <Route path='/parse-excel' element={ <ParseExcel /> } /> 
+
+    </Routes>
+    </Container>
+    </main>
+
     </div>
+   
   );
 }
 
