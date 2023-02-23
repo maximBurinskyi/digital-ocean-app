@@ -12,6 +12,10 @@ code {
     monospace;
 }
 
+.filename {
+  color: gray;
+  /* margin-left: 2rem; */
+}
 .small-container {
   max-width: 600px;
 }
@@ -23,4 +27,8 @@ code {
 
 .table-body {
   font-size: small;
+}
+
+.phone-header {
+  color: white;
 }
