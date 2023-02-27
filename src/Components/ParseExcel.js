@@ -16,6 +16,8 @@ const ParseExcel = () => {
     const [other, setOther] = useState(null);
 
     const [sheetData, setSheetData] = useState([]);
+    const [sheetData2, setSheetData2] = useState([]);
+
     const [sheet, setSheet] = useState(null);
 
     const [columns, setColumns] = useState([]);
@@ -55,6 +57,8 @@ const ParseExcel = () => {
           header: 1
         })
 
+        const jsonData2 = utils.sheet_to_json(worksheet)
+
         setSheet(Object.keys(e)[0]);
         // e.stopPropagation(); e.preventDefault();
         // const f = e.dataTransfer.files[0];
@@ -63,11 +67,14 @@ const ParseExcel = () => {
         // /* data is an ArrayBuffer */
         // const workbook = utils.sheet_to_json(data);
         setSheetData(jsonData);
+        setSheetData2(jsonData2);
+
 
         setColumns(jsonData[0]);
         setBody(jsonData.shift());
         
         console.log(jsonData);
+        console.log(jsonData2);
     }
 
     const handleRemove = () => {
@@ -76,6 +83,27 @@ const ParseExcel = () => {
       fileRef.current.value = "";
       setSheetData([])
       setColumns([])
+    }
+    const handleChange = (e) => {
+      const { name, checked } = e.target
+      alert('hello selected')
+      console.log(name)
+      if (name === 'allselect') {
+        const checkedValue = sheetData2.map((row) => {
+          return {...row, reject: true}
+        })
+        console.log(checkedValue)
+        setSheetData2(checkedValue)
+      } else {
+        console.log(name)
+        const checkedValue = sheetData2.map( (row) => 
+        row.номерRhino
+        === name? {...row, reject: checked}: row)
+        console.log(checkedValue)
+        setSheetData2(checkedValue)
+      }
+      
+
     }
   return (
     <div>
@@ -113,30 +141,73 @@ const ParseExcel = () => {
           <Table bordered className='border'>
             <thead className='text-primary table-header'>
               <tr>
+                <th>
+                  <input type="checkbox" name='allselect' checked={ !sheetData2.some( (row) => row.reject !== true)} onChange={handleChange}  />
+                </th>
+                <th>Авто</th>
+                <th>Наименование</th>
+                <th>НомерRhino</th>
+                <th>оригинальный номер</th>
+                <th>цена со склада</th>
+                <th>цена входящая</th>
+                <th>цена с амортизацией</th>
+                <th>дата завоза</th>
+
+
+
+
 
               
               {/* {sheetData[0].map(h => <td>{h}</td>)} */}
-              {columns.map(c => (
+
+               {/* comented to check */}
+
+              {/* {columns.map(c => (
             // <div key={c}>{c}</div>
             <td key={c}>{c}</td>
-          ))}
+          ))} */}
 
               {/* {sheetData} */}
 
             {/* {sheet.map(h => <td>{h}</td>)} */}
             </tr>
             </thead>
-            <tbody className='table-body'>
-              {/* <tr> */}
-              {sheetData.slice(1).map((row) => (
-            // <div key={c}>{c}</div>
-            <tr >
-              {row.map(c => <td>{c} </td> )}
+
+            <tbody>
+              { sheetData2.map( (getusers, index)=>(         
+            <tr  key={index}>
+            <th> <input type="checkbox" name={ getusers.номерRhino
+            } checked={getusers?.reject|| false } onChange={ handleChange }  /></th>
+            <td>{ index+1} </td>
+            <td>{ getusers.Авто} </td>
+            <td>{ getusers.Наименование} </td>
+             <td>{ getusers.номерRhino} </td> 
+             <td>{getusers.оригинальныйномер}</td>
+            <td><button className="btn btn-danger">Delete</button></td>
             </tr>
-          ))}
+              ))
+            }
+   
+            </tbody>
+
+
+
+            {/* <tbody className='table-body'> */}
+              {/* <tr> */}
+              {/* {sheetData.slice(1).map((row) => ( */}
+             {/* <div key={c}>{c}</div> */}
+            {/* <tr > */}
+              {/* <th> <input type='checkbox'   onChange={handleChange}/> </th> */}
+              {/* {row.map(c => <td>{c} </td> )} */}
+            {/* </tr> */}
+          {/* ))} */}
 
               {/* </tr> */}
-            </tbody>
+            {/* </tbody> */}
+
+
+            
+
           </Table>
           
         </Col>
